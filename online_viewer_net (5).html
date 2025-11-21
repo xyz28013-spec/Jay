@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pro Downloader — Glass UI</title>
+<meta name="description" content="Glass-effect downloader launcher — search & go to trusted download sites" />
+<style>
+  :root{
+    --bg1:#071026; --bg2:#071a3a;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.12);
+    --glass-blur: 12px;
+    --accent-green: #22c55e; /* greeting color for download button */
+    --muted: #b8d4ffaa;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', Arial;
+  }
+
+  html,body{height:100%;margin:0;background:
+    radial-gradient(800px 400px at 10% 10%, rgba(34,79,153,0.12), transparent),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#e9f3ff; -webkit-font-smoothing:antialiased;}
+
+  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+  .card{
+    width:100%;max-width:960px;padding:20px;border-radius:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 25px 60px rgba(2,6,23,0.6);
+    backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    display:grid;grid-template-columns: 300px 1fr;gap:18px;align-items:center;
+  }
+
+  /* LEFT - branding */
+  .brand{
+    padding:18px;border-radius:14px;background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;gap:12px;align-items:center;
+  }
+
+  .logo-wrap{width:110px;height:110px;border-radius:18px;display:grid;place-items:center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.05);backdrop-filter: blur(8px);
+    box-shadow: 0 12px 30px rgba(2,6,23,0.5);
+  }
+
+  /* network style svg animation */
+  .logo svg{width:64px;height:64px;transform-origin:center;animation:spin 14s linear infinite}
+  @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+  h1{font-size:20px;margin:0}
+  p.sub{margin:0;color:var(--muted);font-size:13px;text-align:center}
+
+  /* RIGHT - controls */
+  .controls{padding:14px;border-radius:12px;background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03)}
+
+  .row{display:flex;gap:10px;align-items:center}
+
+  .input{
+    width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.02);color:inherit;font-size:15px;
+  }
+
+  .select{
+    padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);
+    background:rgba(255,255,255,0.02);color:inherit;
+  }
+
+  .btn{
+    padding:11px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:700;
+    background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.06)
+  }
+
+  /* download greeting button */
+  .btn.download{
+    background: linear-gradient(90deg, rgba(34,197,94,0.95), rgba(16,185,129,0.9));
+    color:#022c11;
+    box-shadow: 0 12px 30px rgba(16,185,129,0.10);
+    border: 1px solid rgba(255,255,255,0.02);
+    transform: translateY(0);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn.download:active{transform:translateY(1px)}
+  .hint{font-size:13px;color:var(--muted);margin-top:8px}
+
+  /* small result preview */
+  .preview{margin-top:12px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);font-size:14px;color:#dff8e0}
+
+  /* responsive */
+  @media (max-width:880px){
+    .card{grid-template-columns:1fr;gap:12px;padding:16px}
+    .logo svg{animation:none;transform:none}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-label="Pro downloader dashboard">
+      <!-- LEFT: BRAND -->
+      <div class="brand">
+        <div class="logo-wrap">
+          <div class="logo" title="Network Logo">
+            <!-- Network-style logo (nodes + ring) -->
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.08)" stroke-width="1.6"/>
+              <g transform="translate(8,8)">
+                <circle cx="8" cy="8" r="3.2" fill="#8fb6ff" />
+                <circle cx="40" cy="8" r="3.2" fill="#ffd56b" />
+                <circle cx="24" cy="36" r="3.2" fill="#7fffd4" />
+                <path d="M8 8 L24 36 L40 8" stroke="rgba(255,255,255,0.18)" stroke-width="1.1" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <h1>Pro Downloader</h1>
+        <p class="sub">Transparent glass UI • Instant route to trusted download pages</p>
+
+        <div style="width:100%;text-align:center;margin-top:6px">
+          <button class="btn" onclick="about()">About</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: CONTROLS -->
+      <div class="controls">
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+          <input id="query" class="input" placeholder="Search or paste file name / URL" aria-label="search input" />
+          <select id="site" class="select" title="Choose site">
+            <option value="adescargar">adescargar.online</option>
+            <option value="apkpure">apkpure.com</option>
+            <option value="apkmirror">apkmirror.com</option>
+            <option value="mediafire">mediafire.com</option>
+            <option value="github">github.com (releases)</option>
+          </select>
+        </div>
+
+        <div class="row" style="margin-top:6px">
+          <button class="btn download" id="goBtn">Download →</button>
+          <button class="btn" id="openBtn">Open Site</button>
+          <button class="btn" id="previewBtn">Preview</button>
+        </div>
+
+        <div class="hint">Tip: Paste full URL to go directly. Otherwise choose site and search query.</div>
+
+        <div id="preview" class="preview" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Mapping of site -> search URL pattern
+  const SITE_MAP = {
+    'adescargar': q => `https://adescargar.online/?s=${encodeURIComponent(q)}`,
+    'apkpure': q => `https://apkpure.com/search?q=${encodeURIComponent(q)}`,
+    'apkmirror': q => `https://www.apkmirror.com/?s=${encodeURIComponent(q)}`,
+    'mediafire': q => `https://www.mediafire.com/search/?search=${encodeURIComponent(q)}`,
+    'github': q => `https://github.com/search?q=${encodeURIComponent(q)}+in:readme+sort:updated&type=repositories`
+  };
+
+  const queryEl = document.getElementById('query');
+  const siteEl = document.getElementById('site');
+  const previewEl = document.getElementById('preview');
+  const goBtn = document.getElementById('goBtn');
+  const openBtn = document.getElementById('openBtn');
+  const previewBtn = document.getElementById('previewBtn');
+
+  // If user pastes full URL, use it directly
+  function normalizeInput(v){
+    v = v.trim();
+    try{
+      const u = new URL(v);
+      return { direct: true, url: u.href };
+    }catch(e){
+      return { direct: false, q: v };
+    }
+  }
+
+  function buildUrl(){
+    const val = queryEl.value.trim();
+    if(!val) return null;
+    const n = normalizeInput(val);
+    if(n.direct) return n.url;
+    const site = siteEl.value;
+    const fn = SITE_MAP[site];
+    if(!fn) return null;
+    return fn(val);
+  }
+
+  goBtn.addEventListener('click', () => {
+    const url = buildUrl();
+    if(!url){ alert('Query daalo'); return; }
+    // open in new tab so user directly lands on chosen site's search/download page
+    window.open(url, '_blank', 'noopener');
+  });
+
+  openBtn.addEventListener('click', () => {
+    const site = siteEl.value;
+    // open homepage of selected site
+    const homes = {
+      'adescargar':'https://adescargar.online/',
+      'apkpure':'https://apkpure.com/',
+      'apkmirror':'https://www.apkmirror.com/',
+      'mediafire':'https://www.mediafire.com/',
+      'github':'https://github.com/'
+    };
+    window.open(homes[site], '_blank', 'noopener');
+  });
+
+  previewBtn.addEventListener('click', () => {
+    const url = buildUrl();
+    if(!url){ alert('Query daalo'); return; }
+    previewEl.style.display = 'block';
+    previewEl.textContent = 'Opening: ' + url;
+    // small UX: after 1.2s open tab
+    setTimeout(()=> window.open(url,'_blank','noopener'), 600);
+  });
+
+  // enter to search
+  queryEl.addEventListener('keydown', (e) => { if(e.key==='Enter'){ goBtn.click(); } });
+
+  function about(){
+    alert('Pro Downloader — UI demo. Yeh sirf redirect karta hai trusted download sites par. Khud direct download link generate nahi karta.');
+  }
+</script>
+</body>
+</html>
